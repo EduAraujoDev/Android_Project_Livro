@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.fragments.AboutDialog;
 import com.livroandroid.android_project_livro.fragments.CarrosFragment;
+import com.livroandroid.android_project_livro.fragments.CarrosTabFragment;
 
 public class MainActivity extends BaseActivity {
 
@@ -20,7 +21,7 @@ public class MainActivity extends BaseActivity {
         setupNavDrawer();
 
         // Inicializa o layout principal com o fragment dos carros
-        replaceFragment(CarrosFragment.newInstance(R.string.carros));
+        replaceFragment(new CarrosTabFragment());
     }
 
     @Override
