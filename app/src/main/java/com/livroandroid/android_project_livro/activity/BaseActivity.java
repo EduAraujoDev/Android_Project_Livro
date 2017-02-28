@@ -5,14 +5,15 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.livroandroid.android_project_livro.R;
-
-import livroandroid.lib.utils.NavDrawerUtil;
+import com.livroandroid.android_project_livro.fragments.CarrosFragment;
+import com.livroandroid.android_project_livro.fragments.SiteLivroFragment;
 
 public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
     protected DrawerLayout drawerLayout;
@@ -72,24 +73,29 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
     private void onNavDrawerItemSelected(MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.nav_item_carros_todos:
-                toast("Clicou em carros");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_carros_classicos:
-                toast("Clicou em carros clássicos");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_carros_esportivos:
-                toast("Clicou em carros esportivos");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_carros_luxo:
-                toast("Clicou em carros luxo");
+                replaceFragment(new CarrosFragment());
                 break;
             case R.id.nav_item_site_livro:
-                snack(drawerLayout, "Clicou em site do livro");
+                replaceFragment(new SiteLivroFragment());
                 break;
             case R.id.nav_item_settings:
                 toast("Clicou em configurações");
                 break;
         }
+    }
+
+    // Adiciona o fragment ao centro da tela
+    protected void replaceFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "TAG").commit();
     }
 
     @Override
