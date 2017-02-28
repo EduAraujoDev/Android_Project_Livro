@@ -17,6 +17,6 @@ public class MainActivity extends BaseActivity {
         setupNavDrawer();
 
         // Inicializa o layout principal com o fragment dos carros
-        replaceFragment(new CarrosFragment());
+        replaceFragment(CarrosFragment.newInstance(R.string.carros));
     }
 }
