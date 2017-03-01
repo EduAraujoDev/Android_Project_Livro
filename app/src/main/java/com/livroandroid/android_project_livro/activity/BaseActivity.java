@@ -96,7 +96,7 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
 
     // Adiciona o fragment ao centro da tela
     protected void replaceFragment(Fragment fragment) {
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "TAG").commit();
+        //getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment, "TAG").commit();
     }
 
     @Override

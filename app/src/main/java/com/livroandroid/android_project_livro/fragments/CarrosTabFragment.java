@@ -12,7 +12,7 @@ import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.adapter.TabsAdapter;
 
 public class CarrosTabFragment extends BaseFragment {
-
+/*
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_carros_tab, container, false);
@@ -31,6 +31,7 @@ public class CarrosTabFragment extends BaseFragment {
 
         // Cor branca no texto (o fundo azul foi definido no layout)
         tabLayout.setTabTextColors(cor, cor);
+
         return view;
-    }
+    }*/
 }
