@@ -19,7 +19,7 @@ import com.livroandroid.android_project_livro.fragments.SiteLivroFragment;
 public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
     protected DrawerLayout drawerLayout;
 
-    protected void setUpTooBar() {
+    protected void setUpToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         if (toolbar != null) {
