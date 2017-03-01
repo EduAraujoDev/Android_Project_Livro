@@ -2,15 +2,12 @@ package com.livroandroid.android_project_livro.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.activity.CarroActivity;
@@ -56,11 +53,19 @@ public class CarrosFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
+        view.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                snack(recyclerView, "Exemplo de FAB Button");
+            }
+        });
+
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         taskCarros();
     }
