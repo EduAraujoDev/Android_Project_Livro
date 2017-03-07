@@ -1,6 +1,7 @@
 package com.livroandroid.android_project_livro.fragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -65,14 +66,29 @@ public class CarrosFragment extends BaseFragment {
     }
 
     private void taskCarros() {
-        // Busca os carros
-        try {
-            this.carros = CarroService.getCarros(getContext(), tipo);
+        // Busca os carros: dispara task
+        new GetCarrosTask().execute();
+    }
 
-            // Atualiza a lista
-            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
-        } catch (IOException e) {
-            Log.e("livro", e.getMessage(), e);
+    // Task para buscar os carros
+    private class GetCarrosTask extends AsyncTask<Void,Void,List<Carro>> {
+        @Override
+        protected List<Carro> doInBackground(Void... params) {
+            try {
+                // Busca os carros em background (Thread)
+                return CarroService.getCarros(getContext(), tipo);
+            } catch (IOException e) {
+                Log.e("livroandroid", e.getMessage(), e);
+                return null;
+            }
+        }
+        // Atualiza a interface
+        protected void onPostExecute(List<Carro> carros) {
+            if(carros != null) {
+                CarrosFragment.this.carros = carros;
+                // Atualiza a view na UI Thread
+                recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+            }
         }
     }
 

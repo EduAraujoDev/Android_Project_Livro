@@ -13,26 +13,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import livroandroid.lib.utils.FileUtils;
+import livroandroid.lib.utils.HttpHelper;
 
 public class CarroService {
     private static final boolean LOG_ON = true;
     private static final String TAG = "CarroService";
 
+    private static final String URL = "http://www.livroandroid.com.br/livro/carros/carros_{tipo}.json";
+
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
-        String json = readFile(context, tipo);
+        String tipoString = getTipo(tipo);
+        String url = URL.replace("{tipo}", tipoString);
+
+        // Faz a requisição HTTP no servidor e retorna a string com o conteúdo.
+        HttpHelper http = new HttpHelper();
+        String json = http.doGet(url);
         List<Carro> carros = parserJSON(context, json);
+
         return carros;
     }
 
-    // Faz a leitura do arquivo que está na pasta /res/raw
-    private static String readFile(Context context, int tipo) throws IOException {
+    private static String getTipo(int tipo) {
         if (tipo == R.string.classicos) {
-            return FileUtils.readRawFileString(context, R.raw.carros_classicos, "UTF-8");
+            return "classicos";
         } else if (tipo == R.string.esportivos) {
-            return FileUtils.readRawFileString(context, R.raw.carros_esportivos, "UTF-8");
+            return "esportivos";
         }
-        return FileUtils.readRawFileString(context, R.raw.carros_luxo, "UTF-8");
+        return "luxo";
     }
 
     // Faz o parser do JSON e cria a lista de carros
