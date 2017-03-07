@@ -1,7 +1,7 @@
 package com.livroandroid.android_project_livro.domain;
 
 @org.parceler.Parcel
-public class Carro {
+public class Carro{
     private static final long serialVersionUID = 6601006766832473959L;
     public long id;
     public String tipo;

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import com.livroandroid.android_project_livro.domain.CarroService;
 
 import org.parceler.Parcels;
 
+import java.io.IOException;
 import java.util.List;
 
 public class CarrosFragment extends BaseFragment {
@@ -64,10 +66,14 @@ public class CarrosFragment extends BaseFragment {
 
     private void taskCarros() {
         // Busca os carros
-        this.carros = CarroService.getCarros(getContext(), tipo);
+        try {
+            this.carros = CarroService.getCarros(getContext(), tipo);
 
-        // Atualiza a lista
-        recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+            // Atualiza a lista
+            recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
+        } catch (IOException e) {
+            Log.e("livro", e.getMessage(), e);
+        }
     }
 
     private CarroAdapter.CarroOnClickListener onClickCarro() {
