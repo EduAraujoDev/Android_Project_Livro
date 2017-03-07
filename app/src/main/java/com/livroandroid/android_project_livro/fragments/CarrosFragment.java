@@ -67,28 +67,37 @@ public class CarrosFragment extends BaseFragment {
 
     private void taskCarros() {
         // Busca os carros: dispara task
-        new GetCarrosTask().execute();
+        startTask("carros", new GetCarrosTask());
     }
 
     // Task para buscar os carros
-    private class GetCarrosTask extends AsyncTask<Void,Void,List<Carro>> {
+    private class GetCarrosTask implements TaskListener<List<Carro>> {
+
         @Override
-        protected List<Carro> doInBackground(Void... params) {
-            try {
-                // Busca os carros em background (Thread)
-                return CarroService.getCarros(getContext(), tipo);
-            } catch (IOException e) {
-                Log.e("livroandroid", e.getMessage(), e);
-                return null;
-            }
+        public List<Carro> execute() throws Exception {
+            // Busca os carros em backgroud (Thread)
+            return CarroService.getCarros(getContext(), tipo);
         }
-        // Atualiza a interface
-        protected void onPostExecute(List<Carro> carros) {
-            if(carros != null) {
+
+        @Override
+        public void updateView(List<Carro> carros) {
+            if (carros != null) {
+                // Salva a lista de carros no atributo de classe
                 CarrosFragment.this.carros = carros;
                 // Atualiza a view na UI Thread
                 recyclerView.setAdapter(new CarroAdapter(getContext(), carros, onClickCarro()));
             }
+        }
+
+        @Override
+        public void onError(Exception exception) {
+            // Qualquer exceção lançada no método execute vai criar aqui.
+            alert("Ocorreu algum erro ao buscar os dados.");
+        }
+
+        @Override
+        public void onCancelled(String cod) {
+
         }
     }
 
