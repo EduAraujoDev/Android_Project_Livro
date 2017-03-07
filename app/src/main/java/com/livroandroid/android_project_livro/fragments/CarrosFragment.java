@@ -1,12 +1,11 @@
 package com.livroandroid.android_project_livro.fragments;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +18,13 @@ import com.livroandroid.android_project_livro.domain.CarroService;
 
 import org.parceler.Parcels;
 
-import java.io.IOException;
 import java.util.List;
 
 public class CarrosFragment extends BaseFragment {
     private int tipo;
     protected RecyclerView recyclerView;
     private List<Carro> carros;
+    private SwipeRefreshLayout swipeLayout;
 
     // Método para instanciar esse fragment pelo tipo
     public static CarrosFragment newInstance(int tipo) {
@@ -56,18 +55,36 @@ public class CarrosFragment extends BaseFragment {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setHasFixedSize(true);
 
+        swipeLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeToRefresh);
+        swipeLayout.setOnRefreshListener(OnRefreshListener());
+        swipeLayout.setColorSchemeResources(
+                R.color.refresh_progress_1,
+                R.color.refresh_progress_2,
+                R.color.refresh_progress_3);
+
         return view;
+    }
+
+    private SwipeRefreshLayout.OnRefreshListener OnRefreshListener() {
+        return new SwipeRefreshLayout.OnRefreshListener() {
+
+            @Override
+            public void onRefresh() {
+                // Atualiza ao fazer o gesto Pull to Refresh
+                taskCarros(true);
+            }
+        };
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        taskCarros();
+        taskCarros(false);
     }
 
-    private void taskCarros() {
+    private void taskCarros(boolean pullToRefresh) {
         // Busca os carros: dispara task
-        startTask("carros", new GetCarrosTask(), R.id.progress);
+        startTask("carros", new GetCarrosTask(), pullToRefresh ? R.id.swipeToRefresh : R.id.progress);
     }
 
     // Task para buscar os carros
@@ -75,6 +92,7 @@ public class CarrosFragment extends BaseFragment {
 
         @Override
         public List<Carro> execute() throws Exception {
+            Thread.sleep(500);
             // Busca os carros em backgroud (Thread)
             return CarroService.getCarros(getContext(), tipo);
         }
