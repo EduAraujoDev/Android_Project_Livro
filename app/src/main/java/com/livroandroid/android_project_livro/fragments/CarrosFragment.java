@@ -20,6 +20,8 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import livroandroid.lib.utils.AndroidUtils;
+
 public class CarrosFragment extends BaseFragment {
     private int tipo;
     protected RecyclerView recyclerView;
@@ -70,8 +72,14 @@ public class CarrosFragment extends BaseFragment {
 
             @Override
             public void onRefresh() {
-                // Atualiza ao fazer o gesto Pull to Refresh
-                taskCarros(true);
+                // Valida se existe conexão ao fazer o gesto Pull to Refresh
+                if (AndroidUtils.isNetworkAvailable(getContext())) {
+                    // Atualiza ao fazer o gesto Pull to Refresh
+                    taskCarros(true);
+                } else {
+                    swipeLayout.setRefreshing(false);
+                    snack(recyclerView, R.string.error_conexao_indisponivel);
+                }
             }
         };
     }
