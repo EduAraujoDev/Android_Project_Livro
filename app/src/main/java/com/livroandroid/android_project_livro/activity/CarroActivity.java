@@ -8,8 +8,6 @@ import com.livroandroid.android_project_livro.domain.Carro;
 import com.livroandroid.android_project_livro.fragments.CarroFragment;
 import com.squareup.picasso.Picasso;
 
-import org.parceler.Parcels;
-
 public class CarroActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +18,8 @@ public class CarroActivity extends BaseActivity {
         setUpToolBar();
 
         // Título da toolbar e botão up navigation
-        Carro c = Parcels.unwrap(getIntent().getParcelableExtra("carro"));;
+        Carro c = getIntent().getParcelableExtra("carro");
+
         getSupportActionBar().setTitle(c.nome);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

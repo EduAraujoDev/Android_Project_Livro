@@ -10,15 +10,13 @@ import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.domain.Carro;
 import com.squareup.picasso.Picasso;
 
-import org.parceler.Parcels;
-
 public class CarroFragment extends BaseFragment {
     private Carro carro;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_carro, container, false);
-        carro = Parcels.unwrap(getArguments().getParcelable("carro"));
+        carro = getArguments().getParcelable("carro");
         return view;
     }
 

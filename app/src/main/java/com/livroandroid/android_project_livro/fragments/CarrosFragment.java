@@ -16,8 +16,6 @@ import com.livroandroid.android_project_livro.adapter.CarroAdapter;
 import com.livroandroid.android_project_livro.domain.Carro;
 import com.livroandroid.android_project_livro.domain.CarroService;
 
-import org.parceler.Parcels;
-
 import java.util.List;
 
 import livroandroid.lib.utils.AndroidUtils;
@@ -133,7 +131,7 @@ public class CarrosFragment extends BaseFragment {
             public void onClickCarro(View view, int idx) {
                 Carro c = carros.get(idx);
                 Intent intent = new Intent(getContext(), CarroActivity.class);
-                intent.putExtra("carro", Parcels.wrap(c));
+                intent.putExtra("carro", c);
                 startActivity(intent);
             }
         };
