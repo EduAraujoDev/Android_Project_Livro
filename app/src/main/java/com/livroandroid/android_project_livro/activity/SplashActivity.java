@@ -22,7 +22,8 @@ public class SplashActivity extends Activity {
 
         // Lista de permissões necessárias.
         String permissions[] = new String [] {
-
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
         };
 
         // Valida lista de permissões.
