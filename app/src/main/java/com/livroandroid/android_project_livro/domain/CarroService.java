@@ -1,6 +1,7 @@
 package com.livroandroid.android_project_livro.domain;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.livroandroid.android_project_livro.R;
@@ -17,6 +18,7 @@ import java.util.List;
 import livroandroid.lib.utils.FileUtils;
 import livroandroid.lib.utils.HttpHelper;
 import livroandroid.lib.utils.IOUtils;
+import livroandroid.lib.utils.SDCardUtils;
 
 public class CarroService {
     private static final boolean LOG_ON = true;
@@ -34,8 +36,23 @@ public class CarroService {
         List<Carro> carros = parserJSON(context, json);
 
         salvarArquivoMemoriaInterna(context, url, json);
+        salvarArquivoMemoriaExterna(context, url, json);
 
         return carros;
+    }
+
+    private static void salvarArquivoMemoriaExterna(Context context, String url, String json) {
+        String fileName = url.substring(url.lastIndexOf("/")+1);
+
+        // Cria um arquivo privado
+        File f = SDCardUtils.getPrivateFile(context, fileName, Environment.DIRECTORY_DOWNLOADS);
+        IOUtils.writeString(f, json);
+        Log.d(TAG, "1) Arquivo privado salvo na pasta download: " + f);
+
+        // Cria um arquivo publico
+        f = SDCardUtils.getPublicFile(fileName, Environment.DIRECTORY_DOWNLOADS);
+        IOUtils.writeString(f, json);
+        Log.d(TAG, "1) Arquivo público salvo na pasta download: " + f);
     }
 
     private static void salvarArquivoMemoriaInterna(Context context, String url, String json) {
