@@ -12,6 +12,8 @@ import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.adapter.TabsAdapter;
 import com.livroandroid.android_project_livro.fragments.AboutDialog;
 
+import livroandroid.lib.utils.Prefs;
+
 public class MainActivity extends BaseActivity {
 
     @Override
@@ -22,6 +24,8 @@ public class MainActivity extends BaseActivity {
         setUpToolBar();
 
         setupNavDrawer();
+
+        setupViewPagerTabs();
 
         setupViewPagerTabs();
 
@@ -36,7 +40,7 @@ public class MainActivity extends BaseActivity {
 
     private void setupViewPagerTabs() {
         // ViewPager
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setAdapter(new TabsAdapter(getContext(), getSupportFragmentManager()));
 
@@ -49,6 +53,23 @@ public class MainActivity extends BaseActivity {
 
         // Cor branca no texto (o fundo azul foi definido no layout)
         tabLayout.setTabTextColors(cor, cor);
+
+        // Ao criar a view, mostra a última tab selecionada
+        int tabIdx = Prefs.getInteger(getContext(), "tabIdx");
+        viewPager.setCurrentItem(tabIdx);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                // Salva o índice da página/tab selecionada
+                Prefs.setInteger(getContext(), "tabIdx", viewPager.getCurrentItem());
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
     }
 
 
