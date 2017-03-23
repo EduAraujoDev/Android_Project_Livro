@@ -49,5 +49,6 @@ Versao %s<br><br>
     <string name="vazio" />
     <string name="video">Vídeo</string>
     <string name="error_conexao_indisponivel">Conexão indisponivel. Verifique seu W-fi ou 3G.</string>
+    <string name="title_activity_configuracoes">Configurações</string>
 
 </resources>
