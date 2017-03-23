@@ -18,7 +18,6 @@ import java.util.List;
 import livroandroid.lib.utils.FileUtils;
 import livroandroid.lib.utils.HttpHelper;
 import livroandroid.lib.utils.IOUtils;
-import livroandroid.lib.utils.SDCardUtils;
 
 public class CarroService {
     private static final boolean LOG_ON = true;
@@ -27,32 +26,61 @@ public class CarroService {
     private static final String URL = "http://www.livroandroid.com.br/livro/carros/carros_{tipo}.json";
 
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
-        String tipoString = getTipo(tipo);
-        String url = URL.replace("{tipo}", tipoString);
+        List<Carro> carros = getCarrosFromArquivo(context, tipo);
 
-        // Faz a requisição HTTP no servidor e retorna a string com o conteúdo.
-        HttpHelper http = new HttpHelper();
-        String json = http.doGet(url);
-        List<Carro> carros = parserJSON(context, json);
+        if (carros != null && carros.size() > 0) {
+            // Econtrou o arquivo
+            return carros;
+        }
 
-        salvarArquivoMemoriaInterna(context, url, json);
-        salvarArquivoMemoriaExterna(context, url, json);
+        // Se não encontrar, busca no web service
+        carros = getCarrosFromWebService(context, tipo);
 
         return carros;
     }
 
-    private static void salvarArquivoMemoriaExterna(Context context, String url, String json) {
-        String fileName = url.substring(url.lastIndexOf("/")+1);
+    private static List<Carro> getCarrosFromWebService(Context context, int tipo) {
+        String tipoString = getTipo(tipo);
+        String url = URL.replace("{tipo}", tipoString);
+        List<Carro> carros = null;
 
-        // Cria um arquivo privado
-        File f = SDCardUtils.getPrivateFile(context, fileName, Environment.DIRECTORY_DOWNLOADS);
-        IOUtils.writeString(f, json);
-        Log.d(TAG, "1) Arquivo privado salvo na pasta download: " + f);
+        Log.d(TAG, "URL: " + url);
 
-        // Cria um arquivo publico
-        f = SDCardUtils.getPublicFile(fileName, Environment.DIRECTORY_DOWNLOADS);
-        IOUtils.writeString(f, json);
-        Log.d(TAG, "1) Arquivo público salvo na pasta download: " + f);
+        try {
+            HttpHelper http = new HttpHelper();
+            String json = http.doGet(url);
+            carros = parserJSON(context, json);
+
+            salvarArquivoMemoriaInterna(context, url, json);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return carros;
+    }
+
+    private static List<Carro> getCarrosFromArquivo(Context context, int tipo) {
+        String tipoString = getTipo(tipo);
+        String fileName = String.format("carros_%s.json",tipoString);
+        List<Carro> carros = null;
+
+        Log.d(TAG,"Abrindo arquivo: " + fileName);
+
+        try {
+            // Lê o arquivo da memória interna
+            String json = FileUtils.readFile(context,fileName,"UTF-8");
+            if(json == null) {
+                Log.d(TAG,"Arquivo "+fileName+" não encontrado.");
+                return null;
+            }
+
+            carros = parserJSON(context, json);
+            Log.d(TAG,"Retornando carros do arquivo "+fileName+".");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return carros;
     }
 
     private static void salvarArquivoMemoriaInterna(Context context, String url, String json) {
