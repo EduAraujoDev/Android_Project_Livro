@@ -26,7 +26,7 @@ public class CarroService {
     private static final String URL = "http://www.livroandroid.com.br/livro/carros/carros_{tipo}.json";
 
     public static List<Carro> getCarros(Context context, int tipo) throws IOException {
-        List<Carro> carros = getCarrosFromArquivo(context, tipo);
+        List<Carro> carros = getCarrosFromBanco(context, tipo);
 
         if (carros != null && carros.size() > 0) {
             // Econtrou o arquivo
@@ -39,24 +39,52 @@ public class CarroService {
         return carros;
     }
 
-    private static List<Carro> getCarrosFromWebService(Context context, int tipo) {
+    private static List<Carro> getCarrosFromBanco(Context context, int tipo) throws IOException{
+        CarroDB db = new CarroDB(context);
+
+        try {
+            String tipoString = getTipo(tipo);
+            List<Carro> carros = db.findAllByTipo(tipoString);
+            Log.d(TAG, "Retornando " + carros.size() + " carros [" + tipoString + "] do banco");
+            return carros;
+        } finally {
+            db.close();
+        }
+    }
+
+    private static List<Carro> getCarrosFromWebService(Context context, int tipo) throws IOException {
         String tipoString = getTipo(tipo);
         String url = URL.replace("{tipo}", tipoString);
-        List<Carro> carros = null;
 
         Log.d(TAG, "URL: " + url);
 
-        try {
-            HttpHelper http = new HttpHelper();
-            String json = http.doGet(url);
-            carros = parserJSON(context, json);
+        HttpHelper http = new HttpHelper();
 
-            salvarArquivoMemoriaInterna(context, url, json);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String json = http.doGet(url);
+        List<Carro> carros = parserJSON(context, json);
 
+        salvarCarros(context, tipo, carros);
         return carros;
+    }
+
+    // Salva os carros no banco de dados
+    private static void salvarCarros(Context context, int tipo, List<Carro> carros) {
+        String tipoString = getTipo(tipo);
+        CarroDB db = new CarroDB(context);
+
+        try {
+            // Deleta os carros antigos pelo tipo para limpar o banco
+            db.deleteCarrosByTipo(tipoString);
+
+            // Salva todos os carros
+            for (Carro c : carros) {
+                c.tipo = tipoString;
+                Log.d(TAG,"Salvando o carro " + c.nome);
+                db.save(c);
+            }
+        } finally {
+            db.close();
+        }
     }
 
     private static List<Carro> getCarrosFromArquivo(Context context, int tipo) {
