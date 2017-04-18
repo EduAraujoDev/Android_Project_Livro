@@ -9,6 +9,7 @@ import com.livroandroid.android_project_livro.fragments.CarroFragment;
 import com.squareup.picasso.Picasso;
 
 public class CarroActivity extends BaseActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

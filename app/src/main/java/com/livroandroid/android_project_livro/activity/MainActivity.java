@@ -27,8 +27,6 @@ public class MainActivity extends BaseActivity {
 
         setupViewPagerTabs();
 
-        setupViewPagerTabs();
-
         findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -85,6 +83,7 @@ public class MainActivity extends BaseActivity {
 
         if (id == R.id.action_about) {
             AboutDialog.showAbout(getSupportFragmentManager());
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

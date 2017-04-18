@@ -6,7 +6,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,8 +13,6 @@ import android.widget.TextView;
 
 import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.activity.prefs.ConfiguracoesActivity;
-import com.livroandroid.android_project_livro.fragments.CarrosFragment;
-import com.livroandroid.android_project_livro.fragments.CarrosTabFragment;
 import com.livroandroid.android_project_livro.fragments.SiteLivroFragment;
 
 public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
@@ -37,10 +34,11 @@ public class BaseActivity extends livroandroid.lib.activity.BaseActivity {
         // Ícone do menu do nav drawer
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        if (navigationView != null && drawerLayout != null) {
 
+        if (navigationView != null && drawerLayout != null) {
             // Atualiza a imagem e textos do header
             setNavViewValues(navigationView, R.string.nav_drawer_username, R.string.nav_drawer_email, R.mipmap.ic_launcher);
 
