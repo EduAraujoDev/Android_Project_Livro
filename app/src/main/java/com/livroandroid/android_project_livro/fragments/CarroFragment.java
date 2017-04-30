@@ -13,6 +13,7 @@ import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.activity.CarroActivity;
 import com.livroandroid.android_project_livro.domain.Carro;
 import com.livroandroid.android_project_livro.domain.CarroDB;
+import com.livroandroid.android_project_livro.fragments.dialog.DeletarCarroDialog;
 import com.livroandroid.android_project_livro.fragments.dialog.EditarCarroDialog;
 import com.squareup.picasso.Picasso;
 
@@ -65,7 +66,20 @@ public class CarroFragment extends BaseFragment {
             });
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
-            toast("Deletar: " + carro.nome);
+            DeletarCarroDialog.show(getFragmentManager(), new DeletarCarroDialog.Callback(){
+                @Override
+                public void onClickYes() {
+                    toast("Carro [" + carro.nome + "] deletado.");
+
+                    // Deleta o carro
+                    CarroDB db = new CarroDB(getActivity());
+                    db.delete(carro);
+
+                    // Fecha a activity
+                    getActivity().finish();
+                }
+            });
+
             return true;
         } else if (item.getItemId() == R.id.action_share) {
             toast("Compartilhar");
