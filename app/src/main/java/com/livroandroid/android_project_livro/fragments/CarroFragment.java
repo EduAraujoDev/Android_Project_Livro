@@ -2,6 +2,9 @@ package com.livroandroid.android_project_livro.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,6 +20,9 @@ public class CarroFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_carro, container, false);
         carro = getArguments().getParcelable("carro");
+
+        setHasOptionsMenu(true);
+
         return view;
     }
 
@@ -28,5 +34,30 @@ public class CarroFragment extends BaseFragment {
         setTextString(R.id.tDesc, carro.desc);
         final ImageView imgView = (ImageView) getView().findViewById(R.id.img);
         Picasso.with(getContext()).load(carro.urlFoto).fit().into(imgView);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_frag_carro, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_edit) {
+            toast("Editar: " + carro.nome);
+            return true;
+        } else if (item.getItemId() == R.id.action_delete) {
+            toast("Deletar: " + carro.nome);
+            return true;
+        } else if (item.getItemId() == R.id.action_share) {
+            toast("Compartilhar");
+        } else if (item.getItemId() == R.id.action_maps) {
+            toast("Mapa");
+        } else if (item.getItemId() == R.id.action_video) {
+            toast("Vídeo");
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
