@@ -144,6 +144,12 @@ public class CarrosFragment extends BaseFragment {
                 intent.putExtra("carro", c);
                 startActivity(intent);
             }
+
+            @Override
+            public void onLongClickCarro(View view, int idx) {
+                Carro c = carros.get(idx);
+                toast("Clicoue segurou: " + c.nome);
+            }
         };
     }
 

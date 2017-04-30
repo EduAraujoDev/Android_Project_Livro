@@ -49,18 +49,18 @@ public class CarroAdapter extends RecyclerView.Adapter<CarroAdapter.CarrosViewHo
         holder.progress.setVisibility(View.VISIBLE);
 
         // Faz o download da foto e mostra o ProgressBar
-        Picasso.with(context).load(c.urlFoto).fit().into(holder.img,
-                new com.squareup.picasso.Callback() {
-                    @Override
-                    public void onSuccess() {
-                        holder.progress.setVisibility(View.GONE); // download ok
-                    }
+        Picasso.with(context).load(c.urlFoto).fit().into(holder.img, new com.squareup.picasso.Callback() {
+            @Override
+            public void onSuccess() {
+                holder.progress.setVisibility(View.GONE); // download ok
+            }
 
-                    @Override
-                    public void onError() {
-                        holder.progress.setVisibility(View.GONE);
-                    }
-                });
+            @Override
+            public void onError() {
+                holder.progress.setVisibility(View.GONE);
+            }
+        });
+
         // Click
         if (carroOnClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -71,10 +71,22 @@ public class CarroAdapter extends RecyclerView.Adapter<CarroAdapter.CarrosViewHo
                 }
             });
         }
+
+        // Click longo
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener(){
+
+            @Override
+            public boolean onLongClick(View v) {
+                carroOnClickListener.onLongClickCarro(holder.itemView, position);
+
+                return true;
+            }
+        });
     }
 
     public interface CarroOnClickListener {
-        public void onClickCarro(View view, int idx);
+        void onClickCarro(View view, int idx);
+        void onLongClickCarro(View view, int idx);
     }
 
     // ViewHolder com as views
@@ -95,4 +107,3 @@ public class CarroAdapter extends RecyclerView.Adapter<CarroAdapter.CarrosViewHo
         }
     }
 }
-
