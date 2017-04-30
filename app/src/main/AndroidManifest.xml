@@ -22,6 +22,7 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar.NavDrawer">
         </activity>
         <activity

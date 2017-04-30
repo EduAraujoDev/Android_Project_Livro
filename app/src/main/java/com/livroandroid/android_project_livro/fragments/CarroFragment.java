@@ -68,7 +68,7 @@ public class CarroFragment extends BaseFragment {
                     CarrosApplication.getInstance().getBus().post("refresh");
                 }
             });
-            
+
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
             DeletarCarroDialog.show(getFragmentManager(), new DeletarCarroDialog.Callback(){
