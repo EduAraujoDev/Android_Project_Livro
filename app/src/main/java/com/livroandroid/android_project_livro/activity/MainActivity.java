@@ -10,7 +10,7 @@ import android.view.View;
 
 import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.adapter.TabsAdapter;
-import com.livroandroid.android_project_livro.fragments.AboutDialog;
+import com.livroandroid.android_project_livro.fragments.dialog.AboutDialog;
 
 import livroandroid.lib.utils.Prefs;
 

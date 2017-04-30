@@ -10,7 +10,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.livroandroid.android_project_livro.R;
+import com.livroandroid.android_project_livro.activity.CarroActivity;
 import com.livroandroid.android_project_livro.domain.Carro;
+import com.livroandroid.android_project_livro.domain.CarroDB;
+import com.livroandroid.android_project_livro.fragments.dialog.EditarCarroDialog;
 import com.squareup.picasso.Picasso;
 
 public class CarroFragment extends BaseFragment {
@@ -45,7 +48,21 @@ public class CarroFragment extends BaseFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_edit) {
-            toast("Editar: " + carro.nome);
+            EditarCarroDialog.show(getFragmentManager(), carro, new EditarCarroDialog.Callback(){
+
+                @Override
+                public void onCarroUpdated(Carro carro) {
+                    toast("Carro [" + carro.nome + "] atualizado");
+
+                    // Salva o carro depois de fechar o dialog
+                    CarroDB db = new CarroDB(getContext());
+                    db.save(carro);
+
+                    // Atualiza o título com o novo nome
+                    CarroActivity a = (CarroActivity) getActivity();
+                    a.setTitle(carro.nome);
+                }
+            });
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
             toast("Deletar: " + carro.nome);

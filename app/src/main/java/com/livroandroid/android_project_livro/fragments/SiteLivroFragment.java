@@ -12,6 +12,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.livroandroid.android_project_livro.R;
+import com.livroandroid.android_project_livro.fragments.dialog.AboutDialog;
 
 public class SiteLivroFragment extends BaseFragment {
     private static final String URL_SOBRE = "http://www.livroandroid.com.br/sobre.htm";

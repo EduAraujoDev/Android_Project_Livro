@@ -1,4 +1,4 @@
-package com.livroandroid.android_project_livro.fragments;
+package com.livroandroid.android_project_livro.fragments.dialog;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
