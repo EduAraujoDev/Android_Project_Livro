@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.livroandroid.android_project_livro.CarrosApplication;
 import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.activity.CarroActivity;
 import com.livroandroid.android_project_livro.domain.Carro;
@@ -62,8 +63,12 @@ public class CarroFragment extends BaseFragment {
                     // Atualiza o título com o novo nome
                     CarroActivity a = (CarroActivity) getActivity();
                     a.setTitle(carro.nome);
+
+                    // Envia o evento para o bus
+                    CarrosApplication.getInstance().getBus().post("refresh");
                 }
             });
+            
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
             DeletarCarroDialog.show(getFragmentManager(), new DeletarCarroDialog.Callback(){
@@ -77,6 +82,9 @@ public class CarroFragment extends BaseFragment {
 
                     // Fecha a activity
                     getActivity().finish();
+
+                    // Envia o evento para o bus
+                    CarrosApplication.getInstance().getBus().post("refresh");
                 }
             });
 

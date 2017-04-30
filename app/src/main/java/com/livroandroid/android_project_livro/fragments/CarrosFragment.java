@@ -10,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.livroandroid.android_project_livro.CarrosApplication;
 import com.livroandroid.android_project_livro.R;
 import com.livroandroid.android_project_livro.activity.CarroActivity;
 import com.livroandroid.android_project_livro.adapter.CarroAdapter;
 import com.livroandroid.android_project_livro.domain.Carro;
 import com.livroandroid.android_project_livro.domain.CarroService;
+import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
@@ -44,6 +46,9 @@ public class CarrosFragment extends BaseFragment {
             // Lê o tipo dos argumentos
             this.tipo = getArguments().getInt("tipo");
         }
+
+        // Registra a classe para receber eventos
+        CarrosApplication.getInstance().getBus().register(this);
     }
 
     @Override
@@ -140,5 +145,19 @@ public class CarrosFragment extends BaseFragment {
                 startActivity(intent);
             }
         };
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        // Cancela o recebimento de eventos
+        CarrosApplication.getInstance().getBus().unregister(this);
+    }
+
+    @Subscribe
+    public void onBusAtualizarListaCarros(String refresh){
+        // Recebe o evento,atualiza a lista
+        taskCarros(false);
     }
 }
